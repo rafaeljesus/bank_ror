@@ -5,6 +5,25 @@ describe User do
     described_class.delete_all
   end
 
+  describe '#valid_password?' do
+    let(:password) { '12345678' }
+    let(:user) { User.create({email: 'foo@mail.com', password: password})  }
+
+    context 'with valid password' do
+      it 'returns truthy' do
+        expect(user.valid_password?(password)).to eq true
+      end
+    end
+
+    context 'with invalid password' do
+      let(:invalid_password) { '22345678' }
+
+      it 'returns falsy' do
+        expect(user.valid_password?(invalid_password)).to eq false
+      end
+    end
+  end
+
   describe '#create' do
     context 'with valid params' do
       let(:params) { { email: 'foo@mail.com', password: '12345678' } }
