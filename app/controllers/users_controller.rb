@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   def create
     user = User.new(user_params)
-    user.save!
+    user.save
     render json: user.as_json(only: [:id])
   end
 

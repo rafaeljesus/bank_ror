@@ -1,8 +1,11 @@
 class AccountsController < ApplicationController
   before_filter :authenticate!
-  before_action :set_account, only: [:show, :update, :destroy]
+  before_action :set_account, only: [:deposit, :withdraw, :transfer]
 
   def create
+    account = Account.new(account_params)
+    account.save
+    render json: account
   end
 
   def deposit
@@ -20,6 +23,6 @@ class AccountsController < ApplicationController
   end
 
   def account_params
-    params.fetch(:account, {})
+    params.require(:account).permit(:name, :user_id)
   end
 end
