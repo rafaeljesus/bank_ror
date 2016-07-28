@@ -1,10 +1,12 @@
 class Account < ApplicationRecord
   belongs_to :user
 
+  validates_presence_of :name, :user_id
+
   def self.open(params)
     puts "Creating a account with #{params}"
     account = new(params)
-    account.save
+    account.save!
   end
 
   def self.deposit(account, amount)
