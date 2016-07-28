@@ -2,8 +2,10 @@
 
 one:
   name: MyString
+  balance: 1.5
   user: one
 
 two:
   name: MyString
+  balance: 1.5
   user: two
