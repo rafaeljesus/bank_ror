@@ -1,8 +1,7 @@
 class TokenController < ApplicationController
   def create
     user = User.find_by(email: params[:email])
-    # FIXME compare password with BCrypt
-    unless user
+    unless user.valid_password?(params[:password])
       return render json: {errors: ['Invalid Username/Password']}, status: :unauthorized
     end
     render json: payload(user)
