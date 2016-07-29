@@ -3,6 +3,7 @@ require 'rails_helper'
 describe Account do
   let(:user) { User.create({email: 'foo@mail.com', password: '12345678'})  }
   let(:params) { { 'name' => 'Foo', 'user_id' => user.id, 'balance' => 9.99 } }
+  let(:account) { Account.create(params) }
 
   after do
     described_class.delete_all
@@ -31,8 +32,6 @@ describe Account do
   end
 
   describe '#deposit' do
-    let(:account) { Account.create(params) }
-
     context 'with valid params' do
       it 'deposit into account' do
         deposited = described_class.deposit(account, 9.99)
@@ -44,6 +43,42 @@ describe Account do
       it 'returns falsy' do
         deposited = described_class.deposit(account, 0.00)
         expect(deposited).to eq false
+      end
+    end
+  end
+
+  describe '#withdraw' do
+    context 'with valid params' do
+      it 'withdraw from account' do
+        withdrawn = described_class.withdraw(account, 9.99)
+        expect(withdrawn).to eq true
+      end
+    end
+
+    context 'when amount <= 0' do
+      it 'returns falsy' do
+        withdrawn = described_class.withdraw(account, 0.00)
+        expect(withdrawn).to eq false
+      end
+    end
+  end
+
+  describe '#transfer' do
+    let(:user_recipient) { User.create({email: 'bar@mail.com', password: '12345678'})  }
+    let(:params_recipient) { { 'name' => 'Foo', 'user_id' => user_recipient.id, 'balance' => 0.00 } }
+    let(:recipient) { described_class.create(params_recipient) }
+
+    context 'with valid params' do
+      it 'transfer from one account to another account' do
+        transfered = described_class.transfer(account, recipient, 9.99)
+        expect(transfered).to eq true
+      end
+    end
+
+    context 'when amount <= 0' do
+      it 'returns false' do
+        transfered = described_class.transfer(account, recipient, 0.00)
+        expect(transfered).to eq false
       end
     end
   end

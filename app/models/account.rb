@@ -41,7 +41,9 @@ class Account < ApplicationRecord
       return false
     end
 
-    self.withdraw(account, amount)
-    self.deposit(recipient, amount)
+    ActiveRecord::Base.transaction do
+      self.withdraw(account, amount)
+      self.deposit(recipient, amount)
+    end
   end
 end
