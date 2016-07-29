@@ -29,4 +29,22 @@ describe Account do
       end
     end
   end
+
+  describe '#deposit' do
+    let(:account) { Account.create(params) }
+
+    context 'with valid params' do
+      it 'deposit into account' do
+        deposited = described_class.deposit(account, 9.99)
+        expect(deposited).to eq true
+      end
+    end
+
+    context 'when amount <= 0' do
+      it 'returns falsy' do
+        deposited = described_class.deposit(account, 0.00)
+        expect(deposited).to eq false
+      end
+    end
+  end
 end

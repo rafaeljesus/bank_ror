@@ -18,7 +18,7 @@ class Account < ApplicationRecord
     end
 
     account.balance = (account.balance += amount).round(2)
-    account.save
+    account.save!
   end
 
   def self.withdraw(account, amount)
@@ -30,7 +30,7 @@ class Account < ApplicationRecord
     end
 
     account.balance = (account.balance -= amount).round(2)
-    account.save
+    account.save!
   end
 
   def self.transfer(account, recipient, amount)
