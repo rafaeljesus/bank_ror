@@ -24,7 +24,8 @@ class AccountsController < ApplicationController
   end
 
   def transfer
-    recipient = Account.find(params[:recipient_id])
+    recipient_param = params.permit(:recipient_id)
+    recipient = Account.find(recipient_param[:recipient_id])
     if Account.transfer(@account, recipient, amount)
       return render json: {transfered: true}
     end

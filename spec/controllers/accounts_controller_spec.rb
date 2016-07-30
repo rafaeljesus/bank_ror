@@ -39,7 +39,22 @@ describe AccountsController do
 
       it 'returns 200' do
         request.headers['Authorization'] = "Bearer #{token}"
-        put :withdraw, params: params, as: :json
+        post :withdraw, params: params, as: :json
+        expect(response).to have_http_status(:success)
+      end
+    end
+  end
+
+  describe 'POST transfer' do
+    context 'with valid params' do
+      let!(:user_recipient) { User.create({email: 'bar@mail.com', password: '12345678'})  }
+      let(:params_recipient) { { name: 'Foo', user_id:  user_recipient.id, balance: 0.00 } }
+      let!(:recipient) { Account.create(params_recipient) }
+      let(:params) { { id: account.id, recipient_id: recipient.id, amount: 5.00 } }
+
+      it 'returns 200' do
+        request.headers['Authorization'] = "Bearer #{token}"
+        post :transfer, params: params, as: :json
         expect(response).to have_http_status(:success)
       end
     end
