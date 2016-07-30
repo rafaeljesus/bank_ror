@@ -6,8 +6,8 @@
 [![Issue Count](https://codeclimate.com/github/rafaeljesus/bank_ror/badges/issue_count.svg)](https://codeclimate.com/github/rafaeljesus/bank_ror)
 
 * Simple Ruby on Rails Bank Account System
-* Rails 5 API eith minimal [dependencies](https://github.com/rafaeljesus/bank_ror/blob/master/config/application.rb#L4) and [middlewares](https://github.com/rafaeljesus/bank_ror/blob/master/config/application.rb#L25)
-* A minimal docker alpine container
+* Rails 5 API with minimal [dependencies](https://github.com/rafaeljesus/bank_ror/blob/master/config/application.rb#L4) and [middlewares](https://github.com/rafaeljesus/bank_ror/blob/master/config/application.rb#L25)
+* A [minimal](https://hub.docker.com/r/rafaeljesus/bank_ror/tags/) docker alpine container
 * Automatically pushes it to dockerhub if tests pass
 
 ## Installation
