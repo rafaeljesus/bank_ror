@@ -1,0 +1,18 @@
+machine:
+  ruby:
+    version: 2.3.1
+  services:
+    - docker
+
+deployment:
+  master:
+    branch: master
+    commands:
+      - docker build -t rafaeljesus/bank_ror .
+      - docker login -e $DOCKERHUB_EMAIL -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
+      - docker tag rafaeljesus/bank_ror rafaeljesus/bank_ror:master
+      - docker push rafaeljesus/bank_ror:master
+
+test:
+  override:
+    - bundle exec rspec
