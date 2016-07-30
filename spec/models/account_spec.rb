@@ -1,16 +1,13 @@
 require 'rails_helper'
 
 describe Account do
-  let!(:user) { User.create({email: 'foo@mail.com', password: '12345678'})  }
-  let(:params) { { 'name' => 'Foo', 'user_id' => user.id, 'balance' => 9.99 } }
-  let!(:account) { Account.create(params) }
-
-  after do
-    described_class.delete_all
-  end
+  let!(:user) { create(:user) }
+  let!(:account) { create(:account, user_id: user.id) }
 
   describe '#open' do
     context 'with valid params' do
+      let(:params) { attributes_for(:account, user_id: user.id) }
+
       it 'opens a new account' do
         opened = described_class.open(params)
         expect(opened).to eq true
@@ -64,9 +61,9 @@ describe Account do
   end
 
   describe '#transfer' do
-    let!(:user_recipient) { User.create({email: 'bar@mail.com', password: '12345678'})  }
-    let(:params_recipient) { { 'name' => 'Foo', 'user_id' => user_recipient.id, 'balance' => 0.00 } }
-    let!(:recipient) { described_class.create(params_recipient) }
+    let!(:user_recipient) { create(:user, email: 'bar@mail.com') }
+    let(:params_recipient) { attributes_for(:account, user_id: user_recipient.id) }
+    let!(:recipient) { create(:account, params_recipient) }
 
     context 'with valid params' do
       it 'transfer from one account to another account' do

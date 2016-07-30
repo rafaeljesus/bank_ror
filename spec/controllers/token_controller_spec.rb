@@ -1,12 +1,8 @@
 require 'rails_helper'
 
 describe TokenController do
-  let(:params) { { email: 'foo@mail.com', password: '12345678' } }
-  let!(:user) { User.create(params) }
-
-  after do
-    User.delete_all
-  end
+  let(:params) { attributes_for(:user) }
+  let!(:user) { create(:user, params) }
 
   describe 'POST create' do
     context 'with valid params' do
@@ -19,7 +15,7 @@ describe TokenController do
     end
 
     context 'with invalid email' do
-      let(:params_invalid_email) { { email: 'bar@mail.com', password: '12345678' } }
+      let(:params_invalid_email) { attributes_for(:user, password: user.password) }
 
       it 'returns unauthorized' do
         post :create, params: params_invalid_email, as: :json
@@ -28,7 +24,7 @@ describe TokenController do
     end
 
     context 'with invalid password' do
-      let(:params_invalid_password) { { email: 'foo@mail.com', password: 'invalid' } }
+      let(:params_invalid_password) { attributes_for(:user, email: user.email) }
 
       it 'returns unauthorized' do
         post :create, params: params_invalid_password, as: :json

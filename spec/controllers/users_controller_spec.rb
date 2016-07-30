@@ -1,12 +1,8 @@
 require 'rails_helper'
 
 describe UsersController do
-  after do
-    User.delete_all
-  end
-
   describe 'POST create' do
-    let(:params) { { user: { email: 'foo@mail.com', password: '12345678' } } }
+    let(:params) { { user: attributes_for(:user) } }
 
     it 'returns created user id' do
       post :create, params: params

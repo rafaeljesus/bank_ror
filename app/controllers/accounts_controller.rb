@@ -1,42 +1,38 @@
 class AccountsController < ApplicationController
   before_action :authenticate!
-  before_action :set_account, only: [:deposit, :withdraw, :transfer]
 
   def create
-    if Account.open(account_params)
-      return render status: :created
-    end
-    render_unprocessable_entity(:open)
+    return head :unprocessable_entity unless Account.open(account_params)
+    render status: :created
   end
 
   def deposit
-    if Account.deposit(@account, amount)
-      return render json: {deposited: true}
-    end
-    render_unprocessable_entity(:deposit)
+    account = Account.find(params[:id])
+    return head :not_found unless account
+    return head :unprocessable_entity unless Account.deposit(account, amount)
+    render json: {deposited: true}
   end
 
   def withdraw
-    if Account.withdraw(@account, amount)
-      return render json: {withdrawn: true}
-    end
-    render_unprocessable_entity(:withdraw)
+    account = Account.find(params[:id])
+    return head :not_found unless account
+    return head :unprocessable_entity unless Account.withdraw(account, amount)
+    render json: {withdrawn: true}
   end
 
   def transfer
+    account = Account.find(params[:id])
+    return head :not_found unless account
+
     recipient_param = params.permit(:recipient_id)
     recipient = Account.find(recipient_param[:recipient_id])
-    if Account.transfer(@account, recipient, amount)
-      return render json: {transfered: true}
-    end
-    render_unprocessable_entity(:transfer)
+    return head :not_found unless recipient
+
+    return head :unprocessable_entity unless Account.transfer(account, recipient, amount)
+    render json: {transfered: true}
   end
 
   private
-  def set_account
-    @account = Account.find(params[:id])
-  end
-
   def account_params
     params.require(:account).permit(:name, :user_id)
   end

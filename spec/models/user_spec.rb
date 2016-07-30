@@ -1,13 +1,9 @@
 require 'rails_helper'
 
 describe User do
-  after do
-    described_class.delete_all
-  end
-
   describe '#valid_password?' do
-    let(:password) { '12345678' }
-    let!(:user) { User.create({email: 'foo@mail.com', password: password})  }
+    let!(:user) { create(:user) }
+    let(:password) { user.password }
 
     context 'with valid password' do
       it 'returns truthy' do

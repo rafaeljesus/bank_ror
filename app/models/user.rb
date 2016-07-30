@@ -22,11 +22,4 @@ class User < ApplicationRecord
     @password = value
     self.crypted_password = Password.create(value)
   end
-
-  private
-  def password_length
-    if password && password.length < 8
-      errors.add(:password, 'password must be greather then 8')
-    end
-  end
 end

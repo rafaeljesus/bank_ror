@@ -1,17 +1,13 @@
 require 'rails_helper'
 
 describe AccountsController do
-  let!(:user) { User.create({email: 'foo@mail.com', password: '12345678'})  }
-  let!(:account) { Account.create({name: 'Foo', user_id: user.id, balance: 9.99}) }
+  let!(:user) { create(:user) }
+  let!(:account) { create(:account, user_id: user.id) }
   let(:token) { JwtToken.encode({user_id: user.id}) }
-
-  after do
-    Account.delete_all
-  end
 
   describe 'POST create' do
     context 'with valid params' do
-      let(:params) { { account: { name: 'Foo', user_id: user.id } } }
+      let(:params) { { account: attributes_for(:account, user_id: user.id) } }
 
       it 'returns created status' do
         request.headers['Authorization'] = "Bearer #{token}"
@@ -47,9 +43,8 @@ describe AccountsController do
 
   describe 'POST transfer' do
     context 'with valid params' do
-      let!(:user_recipient) { User.create({email: 'bar@mail.com', password: '12345678'})  }
-      let(:params_recipient) { { name: 'Foo', user_id:  user_recipient.id, balance: 0.00 } }
-      let!(:recipient) { Account.create(params_recipient) }
+      let!(:user_recipient) { create(:user) }
+      let!(:recipient) { create(:account, user_id:  user_recipient.id) }
       let(:params) { { id: account.id, recipient_id: recipient.id, amount: 5.00 } }
 
       it 'returns 200' do
