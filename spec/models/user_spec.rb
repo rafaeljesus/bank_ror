@@ -7,7 +7,7 @@ describe User do
 
   describe '#valid_password?' do
     let(:password) { '12345678' }
-    let(:user) { User.create({email: 'foo@mail.com', password: password})  }
+    let!(:user) { User.create({email: 'foo@mail.com', password: password})  }
 
     context 'with valid password' do
       it 'returns truthy' do

@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe Account do
-  let(:user) { User.create({email: 'foo@mail.com', password: '12345678'})  }
+  let!(:user) { User.create({email: 'foo@mail.com', password: '12345678'})  }
   let(:params) { { 'name' => 'Foo', 'user_id' => user.id, 'balance' => 9.99 } }
-  let(:account) { Account.create(params) }
+  let!(:account) { Account.create(params) }
 
   after do
     described_class.delete_all
@@ -64,9 +64,9 @@ describe Account do
   end
 
   describe '#transfer' do
-    let(:user_recipient) { User.create({email: 'bar@mail.com', password: '12345678'})  }
+    let!(:user_recipient) { User.create({email: 'bar@mail.com', password: '12345678'})  }
     let(:params_recipient) { { 'name' => 'Foo', 'user_id' => user_recipient.id, 'balance' => 0.00 } }
-    let(:recipient) { described_class.create(params_recipient) }
+    let!(:recipient) { described_class.create(params_recipient) }
 
     context 'with valid params' do
       it 'transfer from one account to another account' do

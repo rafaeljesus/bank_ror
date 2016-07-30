@@ -6,21 +6,21 @@ class AccountsController < ApplicationController
     if Account.open(account_params)
       return render status: :created
     end
-    render json: {errors: ['Account failed to create']}, status: :unprocessable_entity
+    render_unprocessable_entity(:open)
   end
 
   def deposit
     if Account.deposit(@account, params[:amount])
       return render json: {deposited: true}
     end
-    render json: {errors: ['Deposit failed']}, status: :unprocessable_entity
+    render_unprocessable_entity(:deposit)
   end
 
   def withdraw
     if Account.withdraw(@account, params[:amount])
       return render json: {withdrawn: true}
     end
-    render json: {errors: ['Withdraw failed']}, status: :unprocessable_entity
+    render_unprocessable_entity(:withdraw)
   end
 
   def transfer
@@ -28,7 +28,7 @@ class AccountsController < ApplicationController
     if Account.transfer(@account, recipient, params[:amount])
       return render json: {transfered: true}
     end
-    render json: {errors: ['Transfer failed']}, status: :unprocessable_entity
+    render_unprocessable_entity(:transfer)
   end
 
   private

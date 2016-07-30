@@ -3,8 +3,11 @@ Rails.application.routes.draw do
   resources :health_check, only: [:index]
   resources :users, only: [:create]
 
-  post 'accounts', to: 'accounts#create'
-  post 'accounts/:id/deposit', to: 'accounts#deposit'
-  post 'accounts/:id/withdraw', to: 'accounts#withdraw'
-  post 'accounts/:id/transfer', to: 'accounts#transfer'
+  resources :accounts, only: [:create] do
+    member do
+      post :deposit
+      post :withdraw
+      post :transfer
+    end
+  end
 end
