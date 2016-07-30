@@ -4,8 +4,8 @@ class Account < ApplicationRecord
   validates_presence_of :name, :user_id
 
   def self.open(params)
-    puts "Creating a account with #{params}"
     account = new(params)
+    puts "Creating a account with #{account.attributes}"
     account.save!
   end
 

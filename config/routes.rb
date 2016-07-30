@@ -5,9 +5,9 @@ Rails.application.routes.draw do
 
   resources :accounts, only: [:create] do
     member do
-      post :deposit
-      post :withdraw
-      post :transfer
+      put :deposit
+      put :withdraw
+      put :transfer
     end
   end
 end

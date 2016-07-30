@@ -10,14 +10,14 @@ class AccountsController < ApplicationController
   end
 
   def deposit
-    if Account.deposit(@account, params[:amount])
+    if Account.deposit(@account, amount)
       return render json: {deposited: true}
     end
     render_unprocessable_entity(:deposit)
   end
 
   def withdraw
-    if Account.withdraw(@account, params[:amount])
+    if Account.withdraw(@account, amount)
       return render json: {withdrawn: true}
     end
     render_unprocessable_entity(:withdraw)
@@ -25,7 +25,7 @@ class AccountsController < ApplicationController
 
   def transfer
     recipient = Account.find(params[:recipient_id])
-    if Account.transfer(@account, recipient, params[:amount])
+    if Account.transfer(@account, recipient, amount)
       return render json: {transfered: true}
     end
     render_unprocessable_entity(:transfer)
@@ -38,5 +38,10 @@ class AccountsController < ApplicationController
 
   def account_params
     params.require(:account).permit(:name, :user_id)
+  end
+
+  def amount
+    param = params.permit(:amount)
+    param[:amount].to_f
   end
 end
