@@ -27,7 +27,7 @@ class ApplicationController < ActionController::API
   end
 
   def render_unprocessable_entity(action)
-    render json: {errors: ["#{action.capitalize.to_s} failed"]}, status: :unprocessable_entity
+    render json: {errors: ["#{action.capitalize} failed"]}, status: :unprocessable_entity
   end
 
   def render_unauthorized
