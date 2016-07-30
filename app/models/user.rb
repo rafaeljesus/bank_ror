@@ -1,10 +1,8 @@
 class User < ApplicationRecord
   include BCrypt
 
-  validates_confirmation_of :password, if: :password_present?
-  validates_presence_of :password, on: :create
-  validates_presence_of :email, uniqueness: true, on: :create
-  validate :password_length
+  validates :email, presence: true, uniqueness: true, email: true
+  validates :password, presence: true, length: { in: 6..20 }
 
   def valid_password?(user_password)
     password == user_password
@@ -30,9 +28,5 @@ class User < ApplicationRecord
     if password && password.length < 8
       errors.add(:password, 'password must be greather then 8')
     end
-  end
-
-  def password_present?
-    !password.nil?
   end
 end
